@@ -91,9 +91,10 @@ def insights(key, brand_id, kind, longtail=False, take=8):
         "filter.type": f"urn:entity:{kind}",
         "signal.interests.entities": brand_id,
         "feature.explainability": "true",
-        "bias.trends": "low",
         "take": take,
     }
+    if kind != "destination":
+        p["bias.trends"] = "low"
     if longtail and kind == "podcast":
         p["filter.popularity.max"] = 0.80
     return qget(key, "/v2/insights", p)
